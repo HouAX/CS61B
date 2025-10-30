@@ -33,21 +33,21 @@ public class LinkedListDeque<T> {
 
     /* Adds an item of type T to the front of the deque. */
     public void addFirst(T item) {
-        size += 1;
         sentinel.next = new Node(sentinel, item, sentinel.next);
         sentinel.next.next.prev = sentinel.next;
+        size += 1;
     }
 
     /* Adds an item of type T to the back of the deque. */
     public void addLast(T item) {
-        size += 1;
         sentinel.prev = new Node(sentinel.prev, item, sentinel);
         sentinel.prev.prev.next = sentinel.prev;
+        size += 1;
     }
 
     /* Returns true if deque is empty, false otherwise. */
     public boolean isEmpty() {
-        if (sentinel.next == sentinel) {
+        if (size == 0) {
             return true;
         } else {
             return false;
