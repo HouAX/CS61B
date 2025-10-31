@@ -27,7 +27,7 @@ public class ArrayDeque<T> {
     /* Resizes the underlying array to the target capacity. */
     private void resize(int capacity) {
         T[] a = (T[]) new Object[capacity];
-        for (int i = 0; i < items.length; i++) {
+        for (int i = 0; i < size; i++) {
             a[i] = items[((i + nextFirst + 1) % items.length)];
         }
         items = a;
@@ -75,6 +75,14 @@ public class ArrayDeque<T> {
         }
     }
 
+    /* Checks if the underlying array length needs to be reduced. */
+    public void checkArrayLength() {
+        double usageRatio = (double) size / items.length;
+        if (usageRatio < 0.25 && items.length >= 16) {
+            resize(items.length / 2);
+        }
+    }
+
     /*
      * Removes and returns the item at the front of the deque.
      * If no such item, returns null.
@@ -84,6 +92,7 @@ public class ArrayDeque<T> {
         items[(nextFirst + 1) % items.length] = null;
         nextFirst = (nextFirst + 1) % items.length;
         size -= 1;
+        checkArrayLength();
         return x;
     }
 
@@ -96,6 +105,7 @@ public class ArrayDeque<T> {
         items[(items.length + nextLast - 1) % items.length] = null;
         nextLast = (items.length + nextLast - 1) % items.length;
         size -= 1;
+        checkArrayLength();
         return x;
     }
 
@@ -105,31 +115,5 @@ public class ArrayDeque<T> {
      */
     public T get(int index) {
         return items[(nextFirst + 1 + index) % items.length];
-    }
-
-    public static void main(String[] args) {
-        ArrayDeque<Integer> L = new ArrayDeque();
-        L.addFirst(1);
-        L.addLast(10);
-        System.out.println(L.isEmpty());
-        ArrayDeque<Integer> I = new ArrayDeque();
-        System.out.println(I.isEmpty());
-        L.addLast(10);
-        L.addLast(10);
-        L.addLast(10);
-        L.addLast(10);
-        L.addLast(10);
-        L.addFirst(1);
-        L.addFirst(1);
-        L.printDeque();
-        System.out.println();
-        L.removeFirst();
-        L.removeLast();
-        L.printDeque();
-        System.out.println();
-        System.out.print(L.get(2));
-        System.out.println();
-        System.out.print(L.get(10));
-
     }
 }
