@@ -76,7 +76,7 @@ public class ArrayDeque<T> {
     }
 
     /* Checks if the underlying array length needs to be reduced. */
-    public void checkArrayLength() {
+    private void checkArrayLength() {
         double usageRatio = (double) size / items.length;
         if (usageRatio < 0.25 && items.length >= 16) {
             resize(items.length / 2);
@@ -88,12 +88,16 @@ public class ArrayDeque<T> {
      * If no such item, returns null.
      */
     public T removeFirst() {
-        T x = items[(nextFirst + 1) % items.length];
-        items[(nextFirst + 1) % items.length] = null;
-        nextFirst = (nextFirst + 1) % items.length;
-        size -= 1;
-        checkArrayLength();
-        return x;
+        if (items[(nextFirst + 1) % items.length] == null) {
+            return null;
+        } else {
+            T x = items[(nextFirst + 1) % items.length];
+            items[(nextFirst + 1) % items.length] = null;
+            nextFirst = (nextFirst + 1) % items.length;
+            size -= 1;
+            checkArrayLength();
+            return x;
+        }
     }
 
     /*
@@ -101,12 +105,16 @@ public class ArrayDeque<T> {
      * If no such item, returns null.
      */
     public T removeLast() {
-        T x = items[(items.length + nextLast - 1) % items.length];
-        items[(items.length + nextLast - 1) % items.length] = null;
-        nextLast = (items.length + nextLast - 1) % items.length;
-        size -= 1;
-        checkArrayLength();
-        return x;
+        if (items[(items.length + nextLast - 1) % items.length] == null) {
+            return null;
+        } else {
+            T x = items[(items.length + nextLast - 1) % items.length];
+            items[(items.length + nextLast - 1) % items.length] = null;
+            nextLast = (items.length + nextLast - 1) % items.length;
+            size -= 1;
+            checkArrayLength();
+            return x;
+        }
     }
 
     /*
