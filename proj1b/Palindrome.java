@@ -28,6 +28,7 @@ public class Palindrome {
         Deque<Character> wordDeque = wordToDeque(word);
         while (wordDeque.size() > 1) {
             if (cc.equalChars(wordDeque.removeFirst(), wordDeque.removeLast())) {
+                continue;
             } else {
                 return false;
             }
